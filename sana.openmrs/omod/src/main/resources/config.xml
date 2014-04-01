@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+	
+	<!-- Base Module Properties -->
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
+	<author>Sana Development</author>
+	<description>
+			${project.parent.description}
+	</description>
+
+	<activator>@MODULE_PACKAGE@.SanaModuleActivator</activator>
+	
+	<!-- <updateURL>https://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+	<!-- /Base Module Properties -->
+	
+	<require_version>${openMRSVersion}</require_version>
+	<require_modules>
+		<require_module version="1.0">org.openmrs.module.webservices.rest</require_module>
+	</require_modules>
+	<!-- /Basic Module Properties -->
+
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>@MODULE_PACKAGE@.queue.extension.html.AdminList</class>
+	</extension>
+
+	<extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>@MODULE_PACKAGE@.queue.extension.html.GutterExtension</class>
+	</extension>
+	<!-- /Extensions -->
+
+	<!-- AOP Advice descriptors -->
+	<!-- AOP
+	<advice>
+		<point>org.openmrs.api.FormService</point>
+		<class>@MODULE_PACKAGE@.advice.DuplicateFormAdvisor</class>
+	</advice>
+
+	<advice>
+		<point>org.openmrs.api.UserService</point>
+		<class>@MODULE_PACKAGE@.advice.CountingBeforeAdvice</class>
+	</advice>
+	
+	<advice>
+		<point>org.openmrs.api.PatientService</point>
+		<class>@MODULE_PACKAGE@.advice.CountingAfterAdvice</class>
+	</advice>
+	
+	<advice>
+		<point>org.openmrs.api.ConceptService</point>
+		<class>@MODULE_PACKAGE@.advice.PrintingAroundAdvisor</class>
+	</advice>
+	 /AOP -->
+	<!-- /AOP Advice -->
+	
+	<!-- Required Privileges -->
+	<privilege>
+		<name>Manage Encounter Queue</name>
+		<description>Able to Manage (View/Edit) the encounter queue</description>
+	</privilege>
+	
+	<privilege>
+		<name>View Encounter Queue</name>
+		<description>Able to view the encounter queue</description>
+	</privilege>
+	<!-- /Required Privileges -->
+
+	<!-- Required Global Properties 
+	<globalProperty>
+		<property>@MODULE_ID@.someProperty</property>
+		<defaultValue></defaultValue>
+		<description>
+			A description of the global property goes here.  The description
+			should explain enough for administrators to understand the purpose
+			and possible values for the global property.
+		</description>
+	</globalProperty>
+	/Required Global Properties -->
+	
+	<!-- Required Global Properties -->
+	<globalProperty>
+		<property>@MODULE_ID@.mdsUri</property>
+		<defaultValue>http://localhost/mds</defaultValue>
+		<description>URI of the Sana MDS</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.thumbnail_size</property>
+		<defaultValue>250</defaultValue>
+		<description>Default size of thumbnails to make for uploaded images.</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.notification_server_url</property>
+		<defaultValue>http://localhost/mds/notifications/submit/</defaultValue>
+		<description>URI of the Sana MDS notification SMS service.</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.email_notification_server_url</property>
+		<defaultValue>http://localhost/mds/notifications/submit/email/</defaultValue>
+		<description>URI of the Sana MDS notification email service.</description>
+	</globalProperty>
+	
+	<globalProperty>
+		<property>@MODULE_ID@.DefaultDisplayCount</property>
+		<defaultValue>7</defaultValue>
+		<description>setting the default rows to be displayed in all forms</description>
+	</globalProperty>
+	
+    <globalProperty>
+        <property>@MODULE_ID@.maxQueueItemListSize</property>
+        <defaultValue>10</defaultValue>
+        <description>Sets the maximum number of items returned by a Queue view request.</description>
+    </globalProperty>
+    
+    <globalProperty>
+        <property>@MODULE_ID@.allowEncounterConceptCreation</property>
+        <defaultValue>false</defaultValue>
+        <description>Allows encounter uploads to trigger Concept creation.</description>
+    </globalProperty>
+	
+	<globalProperty>
+        <property>@MODULE_ID@.date_format</property>
+        <defaultValue>MM/dd/yyyy</defaultValue>
+        <description>Date format string for POST request from mds.</description>
+    </globalProperty>
+	<!--
+	<dwr>
+		<allow>
+			<create creator="new" javascript="DWRFormEntryService">
+				<param name="class" value="org.openmrs.module.@MODULE_ID@.web.DWRFormEntryService"/>
+				<include method="enterForm"/>
+			</create>
+		</allow>
+
+		<signatures>
+			<![CDATA[
+			import @MODULE_PACKAGE@.web.DWRFormEntryService;
+			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
+			]]>
+		</signatures>	
+	</dwr>
+	-->
+	
+	<!-- Servlets -->
+	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> -->
+
+
+    <servlet>
+        <servlet-name>queueServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.servlet.QueueServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>conceptSearchServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.servlet.ConceptSearchServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>lexiconServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.servlet.LexiconServlet</servlet-class>
+    </servlet>
+
+	<servlet>
+        <servlet-name>encounterServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.servlet.EncounterServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>complexObsServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.mediaviewer.web.servlet.ComplexObsServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>formServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.servlet.FormServlet</servlet-class>
+    </servlet>
+
+    <!-- Version 1.x servlets -->
+    <servlet>
+        <servlet-name>uploadServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.v1.servlet.UploadServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>uploadToEncounterServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.mediaviewer.web.servlet.UploadToEncounterServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>permissionsServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.v1.servlet.PermissionsServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>saveResponseServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.v1.servlet.SaveResponseServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>retakeServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.queue.web.v1.servlet.RetakeServlet</servlet-class>
+    </servlet>
+	<!-- Internationalization -->
+	<!-- All message codes should start with moduleId.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+    <messages>
+        <lang>pt</lang>
+        <file>messages_pt.properties</file>
+    </messages>
+	<!-- /Internationalization -->
+	
+	<mappingFiles>
+		queue_item.hbm.xml
+		date_items.hbm.xml
+	</mappingFiles>
+</module>
