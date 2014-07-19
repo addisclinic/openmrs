@@ -20,7 +20,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudR
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource("queueitem")
+@Resource(name = "queueitem", supportedClass = QueueItem.class, supportedOpenmrsVersions = { "1.9" })
 @Handler(supports = { QueueItem.class }, order=0)
 public class QueueItemResource extends DataDelegatingCrudResource<QueueItem>{
 
@@ -46,7 +46,7 @@ public class QueueItemResource extends DataDelegatingCrudResource<QueueItem>{
 	 * @see org.openmrs.module.webservices.rest.web.resource.impl.BaseDelegatingResource#getCreatableProperties()
 	 * @should create an encounter type
 	 */
-	@Override
+	//@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		
@@ -96,11 +96,6 @@ public class QueueItemResource extends DataDelegatingCrudResource<QueueItem>{
 		return getService().saveQueueItem(queueItem);
 	}
 
-	/**
-	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#delete(org.openmrs.Encounter, 
-	 * java.lang.String, 
-	 * org.openmrs.module.webservices.rest.web.RequestContext)
-	 */
 	@Override
 	protected void delete(QueueItem queueItem, String reason, RequestContext arg2)
 			throws ResponseException {
@@ -111,18 +106,13 @@ public class QueueItemResource extends DataDelegatingCrudResource<QueueItem>{
 		getService().purgeQueueItem(queueItem);
 	}
 
-	/**
-	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#getByUniqueId(java.lang.String)
-	 */
+	
 	@Override
 	public QueueItem getByUniqueId(String uuid) {
 		return getService().getQueueItemByUuid(uuid);
 	}
 
-	/**
-	 * @see org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource#purge(org.openmrs.Encounter,
-	 * org.openmrs.module.webservices.rest.web.RequestContext)
-	 */
+	
 	@Override
 	public void purge(QueueItem queueItem, RequestContext arg1)
 			throws ResponseException {

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="@MODULE_PACKAGE@">
+	<class name="org.moca.queue.QueueItem" table="moca_queue_item">
+		<id name="queueItemId" type="int" column="id">
+			<generator class="native" />
+		</id>
+			
+		<property name="statusId" 
+		    type="int" column="status" 
+			not-null="true"/>
+			
+		<property name="phoneIdentifier" 
+		    type="java.lang.String" 
+		    column="phone_identifier" 
+		    not-null="true" length="50" />
+			
+		<property name="procedureTitle" 
+		    type="java.lang.String" 
+		    column="procedure_title" 
+		    not-null="true" />
+			
+		<property name="caseIdentifier" 
+		    type="java.lang.String" 
+		    column="case_identifier" 
+            not-null="true" />
+			
+		<property name="dateUploaded" 
+		    type="java.util.Date" 
+		    column="date_uploaded" 
+			not-null="true" 
+			length="19" />
+			
+		<many-to-one name="creator" 
+		    class="org.openmrs.User" 
+		    not-null="true" 
+		    column="creator" />
+
+		<property name="dateCreated" 
+		    type="java.util.Date"
+			column="date_created" 
+			not-null="true" 
+			length="19" />
+
+		<many-to-one name="changedBy" 
+		    class="org.openmrs.User" 
+		    column="changed_by" />
+
+		<property name="dateChanged" 
+		    type="java.util.Date"
+			column="date_changed" 
+			length="19" />
+			
+		<property name="archived" 
+		    type="java.lang.Integer" 
+		    column="archived" 
+		    not-null="false" />
+		
+		<property name="archivedDate" 
+		    type="java.util.Date" 
+		    column="archived_date" />
+		
+		<property name="archivedBy" 
+		    type="java.lang.String" 
+		    column="archived_by" />
+			
+		<property name="patientId" 
+		    type="java.lang.Integer" 
+		    length="11"
+			column="patient_id" 
+			not-null="true" 
+			insert="false" 
+			update="false" />
+			
+		<property name="encounterId" 
+		    type="java.lang.Integer" 
+		    length="11"
+			column="encounter_id" 
+			not-null="true" 
+			insert="false" 
+			update="false" />
+			
+		<many-to-one name="patient" 
+		    class="org.openmrs.Patient" 
+		    not-null="true"
+			column="patient_id" />
+			
+		<many-to-one name="encounter" 
+		    class="org.openmrs.Encounter" 
+		    not-null="true"
+		    cascade="all"
+			column="encounter_id" />
+		<!-- 
+		<set name="observations" lazy="false" table="moca_queue_obs">
+			<key column="queue_id" />
+			<many-to-many class="org.openmrs.Obs" column="obs_id" />
+		</set>
+		-->
+	</class>
+
+</hibernate-mapping>

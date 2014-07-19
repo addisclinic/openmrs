@@ -14,9 +14,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.sana.queue.QueueItem;
 import org.openmrs.module.sana.queue.QueueItemService;
-import org.openmrs.module.sana.queue.web.resource.v1.QueueItemResource;
 
-@Deprecated
+//@Deprecated
 public class QueueServlet extends HttpServlet {
     private static final long serialVersionUID = -5697343624828598856L;
     private Log log = LogFactory.getLog(this.getClass());
@@ -31,16 +30,34 @@ public class QueueServlet extends HttpServlet {
         writer.print("Hello Worldz (from Servlet doGet)<br/>");
         
         try {
+        	
             QueueItemService service = (QueueItemService)Context.getService(QueueItemService.class);;
             for (QueueItem i : service.getVisibleQueueItems()) {
                 writer.print("Queue Item:" + i.getPatientId() + " " 
                 		+ (i.getVisible() ? "vis" :"invis") + " " 
                 		+ i.getEncounter().getObs().size() + " obs");
             }
+            
         } catch(APIException api) {
             api.printStackTrace(writer);
+        } finally {
+        	writer.close();
         }
     
     }
     
+    @Override 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	PrintWriter writer = response.getWriter();
+    	try{
+    		writer.print("Hello Worldz (from Servlet doPost)<br/>");
+    	} finally {
+    		writer.close();
+    	}
+    }
+    
+    @Override
+    public String getServletInfo() {
+        return QueueServlet.class.getName();
+    }
 }

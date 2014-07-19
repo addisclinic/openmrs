@@ -15,7 +15,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  *
  */
 public class QueueResource {
-
+	
 	public DelegatingResourceDescription getRepresentationDescription(
 			Representation arg0) {
 		// TODO Auto-generated method stub
@@ -56,5 +56,5 @@ public class QueueResource {
 			qr.purge(q, arg1);
 		}		
 	}
-
+	
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.moca.queue">
+
+	<class name="SmsType" table="sms_types">
+		<id name="id" type="int" column="id">
+			<generator class="increment" />
+		</id>
+			
+		<property name="smsType" type="java.lang.String" column="smstype" 
+			not-null="true"/>
+			
+		<property name="sms" type="java.lang.String" column="sms" 
+			not-null="true"/>
+			
+		</class>
+		</hibernate-mapping>

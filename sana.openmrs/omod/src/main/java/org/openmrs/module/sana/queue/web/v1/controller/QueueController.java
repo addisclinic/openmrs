@@ -55,78 +55,90 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 @RequestMapping(value = "module/"+Module.ID+"/queue/v1/")
 public class QueueController {
 
-	
-	/** Logger for this class and subclasses */
-	protected final Log log = LogFactory.getLog(getClass());
-	
-	/** Success form view name */
-	private final String HTML_SUCCESS_VIEW = "/module/sana/queue/v1/queue";
-	private final String JSON_SUCCESS_VIEW = "/module/sana/queue/v1/jsonformat";
-	private final String XML_SUCCESS_VIEW = "/module/sana/queue/v1/xmlformat";
-	
+    
+    /** Logger for this class and subclasses */
+    protected final Log log = LogFactory.getLog(getClass());
+    
+    /** Success form view name */
+    private final String HTML_SUCCESS_VIEW = "/module/sana/queue/v1/queue";
+    private final String JSON_SUCCESS_VIEW = "/module/sana/queue/v1/jsonformat";
+    private final String XML_SUCCESS_VIEW = "/module/sana/queue/v1/xmlformat";
+
     public int totalhits = 0;
 
-	protected QueueItemResource getResource() {
-		QueueItemResource q = new QueueItemResource();
-		return q;
-	}
-	
-
-	@RequestMapping(value = "queue.form",method = RequestMethod.GET)
-    public ModelAndView onGetForm(HttpServletRequest request, 
-    		HttpServletResponse response) 
-    {
-		return onRequestInternal(request, response, QueueItemStatus.NEW);
+    protected QueueItemResource getResource() {
+        QueueItemResource q = new QueueItemResource();
+        return q;
     }
-	
-	
-	@RequestMapping(value = "queue.form",method = RequestMethod.POST)
+
+    
+
+    @RequestMapping(value = "queue.form")//,method = RequestMethod.POST)
     public ModelAndView onRequest(HttpServletRequest request, 
-    		HttpServletResponse response) 
+        HttpServletResponse response) 
     {
-		return onRequestInternal(request, response, QueueItemStatus.NEW);
+        return onRequestInternal(request, response, QueueItemStatus.NEW);
     }
-    
-	@RequestMapping(value = "queueClosed.form",method = RequestMethod.POST)
-    public ModelAndView onClosedRequest(HttpServletRequest request, 
-    		HttpServletResponse response) 
-    {
-		return onRequestInternal(request, response, QueueItemStatus.CLOSED);
-    }
-	
-	
-	@RequestMapping(value = "queueDeferred.form",method = RequestMethod.POST)
-    public ModelAndView onDeferredRequest(HttpServletRequest request, 
-    		HttpServletResponse response) 
-    {
-		return onRequestInternal(request, response, QueueItemStatus.DEFERRED);
-    }
-	
-	
-	public static final String ORDER_BY = "hidsortname";
-	public static final String LIMIT = "limit";
-	public static final String START = "gotopagename";
-	public static final String PREV = "hidprevname";
-	public static final String NEXT = "gotopagename";
-	public static final String ARCHIVED = "optionarchive";
-	public static final String PROCEDURE = "comboPro";
-	public static final String PROCEDURE_SEARCH = "proname";
-	public static final String FORMAT = "disformate";
-	
 
-	public static final String OBJECTS = "queueItems";
-	public static final String PROCEDURES = "proceduers";
-	public static final String DATES = "dates";
-	public static final String SIZE = "queuesize";
-	public static final String PAGES = "count";
-	public static final String PAGE = "start";
+    @RequestMapping(value = "queueClosed.form")//,method = RequestMethod.POST)
+    public ModelAndView onClosedRequest(HttpServletRequest request, 
+        HttpServletResponse response) 
+    {
+        return onRequestInternal(request, response, QueueItemStatus.CLOSED);
+    }
+
+    @RequestMapping(value = "queueDeferred.form")//,method = RequestMethod.POST)
+    public ModelAndView onDeferredRequest(HttpServletRequest request, 
+        HttpServletResponse response) 
+    {
+        return onRequestInternal(request, response, QueueItemStatus.DEFERRED);
+    }
+
     
-	public ModelAndView onRequestInternal(HttpServletRequest request,
-			HttpServletResponse response, QueueItemStatus status) 
-	{
-		// System.out.println("checkDate:"+request.getParameter("comboDate"));
-		int defcount = Integer.parseInt(Context.getAdministrationService()
-				.getGlobalProperty(Property.DISPLAY_COUNT));
+    @RequestMapping(value = "queue.form",method = RequestMethod.GET)
+    public ModelAndView onGetForm(HttpServletRequest request, 
+        HttpServletResponse response) 
+    {
+        return onRequestInternal(request, response, QueueItemStatus.NEW);
+    }
+    
+    @RequestMapping(value = "queueClosed.form",method = RequestMethod.GET)
+    public ModelAndView onGetClosedForm(HttpServletRequest request, 
+        HttpServletResponse response) 
+    {
+        return onRequestInternal(request, response, QueueItemStatus.CLOSED);
+    }
+
+
+    @RequestMapping(value = "queueDeferred.form",method = RequestMethod.GET)
+    public ModelAndView onGetDeferredForm(HttpServletRequest request, 
+        HttpServletResponse response) 
+    {
+        return onRequestInternal(request, response, QueueItemStatus.DEFERRED);
+    }
+
+    public static final String ORDER_BY = "hidsortname";
+    public static final String LIMIT = "limit";
+    public static final String START = "gotopagename";
+    public static final String PREV = "hidprevname";
+    public static final String NEXT = "gotopagename";
+    public static final String ARCHIVED = "optionarchive";
+    public static final String PROCEDURE = "comboPro";
+    public static final String PROCEDURE_SEARCH = "proname";
+    public static final String FORMAT = "disformate";
+
+    public static final String OBJECTS = "queueItems";
+    public static final String PROCEDURES = "proceduers";
+    public static final String DATES = "dates";
+    public static final String SIZE = "queuesize";
+    public static final String PAGES = "count";
+    public static final String PAGE = "start";
+
+    public ModelAndView onRequestInternal(HttpServletRequest request,
+        HttpServletResponse response, QueueItemStatus status) 
+    {
+        int defcount = Integer.parseInt(Context.getAdministrationService()
+                        .getGlobalProperty(Property.DISPLAY_COUNT));
 
 		// ------------------------------------------------------------
 		// Set max queue size and sort order Lifo or fifo
@@ -160,9 +172,7 @@ public class QueueController {
 			if (limit.length() > 0) {
 				endvalue = Integer.parseInt(limit);
 				startvalue = Integer.parseInt(start) * endvalue;
-				// System.out.println("start and end:"+startvalue+":"+endvalue+":"+substract);
 				startvalue = startvalue - endvalue - (substract - 1);
-				// System.out.println("start value1:"+startvalue);
 			} else {
 				startvalue = Integer.parseInt(start) * queuelistcount;
 				startvalue = startvalue - endvalue - (substract - 1);
@@ -175,11 +185,11 @@ public class QueueController {
 		// TODO This should go into a POST call
 		if (request.getParameter("subarchivename") != null) // checking archived
 															// button is
-															// submited or not.
+															// submitted or not.
 		{
 			this.handleArchiveRequest(request, response);
 		}
-		
+
 		String strprocedure = getParameter(request, "proname");
 		String checkPro = getParameter(request, "comboPro");
 		String checkDate = getParameter(request, "comboDate");
@@ -241,12 +251,10 @@ public class QueueController {
 			pageno = startvalue / (endvalue - 1);
 			pageno = pageno + 1;
 		}
-		// System.out.println("pageno:"+pageno);
 
 		int count = 1;
 		while (totalrows / (endvalue) > 0) {
 			totalrows = totalrows - endvalue + 1;
-			// System.out.println("In While"+totalrows);
 			count++;
 		}
 		

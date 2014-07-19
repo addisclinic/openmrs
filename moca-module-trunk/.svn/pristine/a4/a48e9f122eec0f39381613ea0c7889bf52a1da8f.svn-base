@@ -1,0 +1,72 @@
+@MODULE_ID@.title=Sana
+@MODULE_ID@.manage=Manage Sana Queue
+@MODULE_ID@.view=View Sana Queue
+@MODULE_ID@.lexicon=Manage Medical Vocabularies
+
+@MODULE_ID@.response=Response
+@MODULE_ID@.responses=Responses
+
+@MODULE_ID@.queue_title=Sana Queue
+@MODULE_ID@.queue_pending_cases=Pending Cases
+@MODULE_ID@.queue_deferred_cases=Deferred Cases
+@MODULE_ID@.queue_closed_cases=Closed Cases
+@MODULE_ID@.queue_find_encounter=Find Encounter
+@MODULE_ID@.queue_patient_cases=Patient Cases
+@MODULE_ID@.queue_sort_by=Sort by
+@MODULE_ID@.queue_items_per_page=Items per Page
+@MODULE_ID@.queue_procedure_title_search=Search Procedures by Title
+@MODULE_ID@.queue_procedure_title_select=Select Visible Procedures by Title
+
+@MODULE_ID@.queue_status=Status
+@MODULE_ID@.queue_patient_id=Patient ID
+@MODULE_ID@.queue_patient_name=Patient Name
+@MODULE_ID@.queue_patient_age=Age
+@MODULE_ID@.queue_patient_sex=Sex
+@MODULE_ID@.queue_procedure=Procedure
+@MODULE_ID@.queue_encounter_id=Encounter ID
+@MODULE_ID@.queue_date_taken=Date Taken
+@MODULE_ID@.queue_date_reviewed=Date Last Reviewed
+@MODULE_ID@.queue_media=Media Summary
+@MODULE_ID@.queue_phone=Contact Number
+
+@MODULE_ID@.queueitem_status_new=New
+@MODULE_ID@.queueitem_status_inprogress=In Progress
+@MODULE_ID@.queueitem_status_deferred=Deferred
+@MODULE_ID@.queueitem_status_closed=Closed
+
+@MODULE_ID@.encounter_viewer=Sana Encounter Viewer
+@MODULE_ID@.status=Status
+@MODULE_ID@.id=ID#
+@MODULE_ID@.patient_visit_responses=Patient Visit Q&A Responses
+@MODULE_ID@.recommendations=Impressions
+@MODULE_ID@.select_vocab=Select medical vocabulary
+@MODULE_ID@.diagnoses=Diagnoses
+@MODULE_ID@.diagnosis_urgency=Diagnosis Urgency
+@MODULE_ID@.emergency=Emergency
+@MODULE_ID@.urgent=Urgent
+@MODULE_ID@.non_urgent=Non-urgent
+@MODULE_ID@.treatment=Treatment
+@MODULE_ID@.comments=Comments
+
+@MODULE_ID@.modify_concept_dictionary=Modify OpenMRS Concept Dictionary
+@MODULE_ID@.add_vocabulary=Add Medical Vocabulary
+@MODULE_ID@.update_vocabulary=Update Medical Vocabulary
+@MODULE_ID@.delete_vocabulary=Delete Medical Vocabulary
+
+@MODULE_ID@.upload_file=Upload File
+@MODULE_ID@.select_csv_file=Select CSV File with Medical Terms
+@MODULE_ID@.create_concept_source=Create New Concept Source
+@MODULE_ID@.name_concept_source=Name of Concept Source (i.e. SNOMED CT 2009)
+@MODULE_ID@.description_concept_source=Description of Concept Source
+@MODULE_ID@.parsing=Parsing Criteria
+@MODULE_ID@.column_concept_name=Column Number for Name of Concept
+@MODULE_ID@.column_concept_class=Column Number for Concept Class (i.e. diagnosis, finding)
+@MODULE_ID@.column_id_num=Column Number for ID Number of Concept
+
+@MODULE_ID@.upload_files=Upload Files
+@MODULE_ID@.select_retired_csv_file=Select CSV File with Retired Terms only
+@MODULE_ID@.select_new_csv_file=Select CSV File with New Terms only
+@MODULE_ID@.select_concept_source=Select Concept Source to Update
+@MODULE_ID@.name_existing_concept_source=Existing Concept Source Name
+
+@MODULE_ID@.select_concept_source_delete=Select Concept Source to Delete

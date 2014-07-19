@@ -261,6 +261,7 @@ public class UploadServlet extends HttpServlet {
 
 			// This constructs the queue item and saves it
 			queueItem = makeQueueItem(encounter, patient, message);
+			//queueItem.setCreator(Context.getUserContext().getAuthenticatedUser());
 			if(log.isDebugEnabled())
 				log.debug("Initialized queue item: "+ queueItem);
 			Context.getService(QueueItemService.class).saveQueueItem(queueItem);
@@ -506,6 +507,7 @@ public class UploadServlet extends HttpServlet {
         // TODO(XXX) Replace these, catch exceptions, etc.
         // Fetches the form from the procedureTitle field or creates a duplicate
         // of the Basic Form
+        log.debug("Using form: " + formName);
         Form form = getForm(formName);
         e.setForm(form);
         

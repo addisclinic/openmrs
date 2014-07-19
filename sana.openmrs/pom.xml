@@ -80,7 +80,6 @@
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>1.4</version>
-                <type>jar</type>
             </dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
@@ -89,14 +88,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-api</artifactId>
-				<version>1.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openmrs.module</groupId>
-				<artifactId>webservices.rest-omod</artifactId>
-				<version>1.0</version>
+				<artifactId>webservices.rest-omod-common</artifactId>
+				<version>2.1.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
