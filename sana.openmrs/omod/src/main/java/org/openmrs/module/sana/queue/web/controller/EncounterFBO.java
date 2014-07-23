@@ -72,7 +72,8 @@ public class EncounterFBO {
 		
 		String diagnoses = "";
 		String urgency = "";
-		String comments = "";
+		String assessment = "";
+		String recommendations = "";
 		String treatment = "";
 		String infoRequest = "";
 		String conceptName = "";
@@ -118,8 +119,13 @@ public class EncounterFBO {
 						doctorName = o.getCreator().getGivenName() + " " 
 									+ o.getCreator().getFamilyName();	
 					}
-					else if(conceptName.equals("DOCTOR COMMENTS")){
-						comments +=  "<br>" + o.getValueAsString(l);
+					else if(conceptName.equals("DOCTOR ASSESSMENT")){
+						assessment +=  "<br>" + o.getValueAsString(l);
+						doctorName = o.getCreator().getGivenName() + " " 
+									+ o.getCreator().getFamilyName();
+					}
+					else if(conceptName.equals("DOCTOR RECOMMENDATIONS")){
+						recommendations +=  "<br>" + o.getValueAsString(l);
 						doctorName = o.getCreator().getGivenName() + " " 
 									+ o.getCreator().getFamilyName();
 					}
@@ -143,7 +149,8 @@ public class EncounterFBO {
 					!conceptName.equals("DOCTOR DIAGNOSIS") &&
 					!conceptName.equals("DOCTOR TREATMENT RECOMMENDATION") &&
 					!conceptName.equals("DOCTOR URGENCY LEVEL") &&
-					!conceptName.equals("DOCTOR COMMENTS") &&
+					!conceptName.equals("DOCTOR ASSESSMENT") &&
+					!conceptName.equals("DOCTOR RECOMMENDATIONS") &&
 					!conceptName.equals("DOCTOR INFO REQUEST")){
 					if (o.getValueAsString(l).equals("")){
 						patientResponses += "<b>" + o.getConcept()
@@ -162,8 +169,8 @@ public class EncounterFBO {
 				
 		//Set existing diagnoses
 		if(!diagnoses.equals("") || !treatment.equals("") 
-				|| !comments.equals("") || !urgency.equals("") 
-				|| !infoRequest.equals(""))
+				|| !assessment.equals("") || !recommendations.equals("") 
+				|| !urgency.equals("") || !infoRequest.equals(""))
 		{
 			existingDiagnoses = "<b>Date of Specialist Consult: </b><br>" 
 				+ q.getDateChanged().toString().substring(0,10) 
@@ -178,9 +185,9 @@ public class EncounterFBO {
 					+ urgency;
 			
 			if(!diagnoses.equals("") || !treatment.equals("") 
-					|| !comments.equals(""))
+					|| !assessment.equals("") || !recommendations.equals(""))
 				existingDiagnoses += "<br><br><b>Diagnosis: </b>" + diagnoses + 
-								 	 "<br><br><b>Plan: </b>" + treatment + comments;
+								 	 "<br><br><b>Plan: </b>" + treatment + assessment + recommendations;
 
 			log.debug("Existing Diagnoses: " + existingDiagnoses);
 		}

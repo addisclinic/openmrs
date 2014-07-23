@@ -283,10 +283,12 @@ input.collapseButton {
 					<input type="radio" name="Urgency" value="Urgent" required="True"/> <spring:message code="sana.urgent" /><br>
 					<input type="radio" name="Urgency" value="Non-Urgent" required="True"/> <spring:message code="sana.non_urgent" /><br>
 					<br/>
-					<spring:message code="sana.treatment" />: <br>
-					<textarea wrap="virtual" class="t1" name="Treatment" rows=3 required="True"></textarea><br><br>	
-					<spring:message code="sana.comments" />: <br>
-					<textarea wrap="virtual" class="t1" name="Comments" rows=3></textarea><br><br>
+          <spring:message code="sana.treatment" />: <br>
+          <textarea wrap="virtual" class="t1" name="Treatment" rows=3 required="True"></textarea><br><br>
+					<spring:message code="sana.assessment" />: <br>
+					<textarea wrap="virtual" class="t1" name="Assessment" rows=3 required="True"></textarea><br><br>	
+					<spring:message code="sana.recommendations" />: <br>
+					<textarea wrap="virtual" class="t1" name="Recommendations" rows=3></textarea><br><br>
 					<input type="submit" value="Send" class="btn"/>
 					<input type="button" value="Back" class="btn" onClick="backToQueue()"/>
 					<input type="button" value="Retake" class="btn" onClick="retake()"/><br><br>
