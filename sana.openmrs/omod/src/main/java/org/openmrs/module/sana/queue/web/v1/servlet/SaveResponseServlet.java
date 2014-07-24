@@ -318,7 +318,7 @@ public class SaveResponseServlet extends HttpServlet {
     	 
     	// TODO Come up with a better way to trigger notification type
 		//Send sms
-		/*
+		
 		try{
 			boolean sms = sendSMS(q, diagnosisList, plan, patientId);
 		} catch (ConnectException err) {
@@ -329,7 +329,6 @@ public class SaveResponseServlet extends HttpServlet {
     		log.error("Unable to send notification", err);
     		fail(output, "Failed to send SMS message." + err.getMessage());
     	}
-		*/
 		
     	try{
 			//If person who uploaded the case has an email, then email the 
@@ -349,9 +348,6 @@ public class SaveResponseServlet extends HttpServlet {
     	response.sendRedirect(request.getContextPath() 
 				+  "/module/sana/queue/v1/queue.form");
     }
-    
-    
-    
     
     @Override
     protected void doGet(HttpServletRequest request, 
@@ -409,8 +405,8 @@ public class SaveResponseServlet extends HttpServlet {
 	    		+"\nReferring Clinician: " + q.getCreator().getGivenName() 
 	    			+" " + q.getCreator().getFamilyName() 
 	    		+"\nPatient ID: " + patientId  
-	    		+"\nName: " + q.getEncounter().getPatient().getGivenName() + " "  
-	    			+q.getEncounter().getPatient().getFamilyName() 
+	    		//+"\nName: " + q.getEncounter().getPatient().getGivenName() + " " 
+	    		//+q.getEncounter().getPatient().getFamilyName() 
 	    		+"\nAge: " + q.getEncounter().getPatient().getAge().toString() 
 	    		+"\nSite: " + e.getLocation().getDisplayString() 
 	    		+"\n\nDate of Specialist Consult: " 

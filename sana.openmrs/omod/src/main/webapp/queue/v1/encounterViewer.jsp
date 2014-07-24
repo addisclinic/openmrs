@@ -85,7 +85,7 @@ function retake() {
   jQuery.post("${pageContext.request.contextPath}/moduleServlet/sana/retakeServlet",
              {'msg':msg, 'queueItemId':queueID},
              function(data) {
-                if(data == "OK") {
+                if(data != null) {
                  document.location.href= "queueDeferred.form"
                 } else {
                  alert("Error: Could not send message. Check OpenMRS Configuration settings");
