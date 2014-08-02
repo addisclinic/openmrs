@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- Beans to add to the current Application context definition -->
+  
+<beans>
+ 
+    <bean id="mocaUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+				<prop key="/module/moca/queue.form">queueController</prop>
+				<prop key="/module/moca/queueClosed.form">closedQueueController</prop>
+				<prop key="/module/moca/queueDeferred.form">deferredQueueController</prop>
+				<prop key="/module/moca/encounterViewer.form">encounterFormController</prop>
+				<prop key="/module/moca/lexicon.form">lexiconController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="queueController" class="org.moca.queue.web.controller.QueueController">
+		<property name="viewName"><value>/module/moca/queue</value></property>
+	</bean>
+	
+	<bean id="closedQueueController" class="org.moca.queue.web.controller.ClosedQueueController">
+		<property name="viewName"><value>/module/moca/queueClosed</value></property>
+	</bean>
+	
+	<bean id="deferredQueueController" class="org.moca.queue.web.controller.DeferredQueueController">
+		<property name="viewName"><value>/module/moca/queueDeferred</value></property>
+	</bean>
+	
+	<bean id="encounterFormController" class="org.moca.queue.web.controller.EncounterFormController">
+		<property name="commandName"><value>object</value></property>
+		<property name="formView"><value>/module/moca/encounter</value></property>
+		<property name="successView"><value>encounter.form</value></property>
+	</bean>
+	
+	<bean id="lexiconController" class="org.moca.queue.web.controller.LexiconController">
+		<property name="viewName"><value>/module/moca/lexicon</value></property>
+	</bean>
+	
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.moca.queue.QueueItemService</value> 
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager"><ref bean="transactionManager"/></property>
+					<property name="target">
+						<bean class="org.moca.queue.impl.QueueItemServiceImpl">
+							<property name="queueItemDAO">
+								<bean class="org.moca.queue.db.hibernate.HibernateQueueItemDAO">
+									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
+								</bean>
+							</property>	
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor"/>
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean parent="obsServiceTarget" >
+        <property name="handlers">
+            <map>
+                <entry>
+                    <key><value>ThumbnailingImageHandler</value></key>
+                    <bean class="org.moca.handler.ThumbnailingImageHandler"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+	
+</beans>

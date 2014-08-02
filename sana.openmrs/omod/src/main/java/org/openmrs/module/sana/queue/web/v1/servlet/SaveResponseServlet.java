@@ -384,8 +384,8 @@ public class SaveResponseServlet extends HttpServlet {
     {
 		//If person who uploaded the case has an email, then email the 
 		// specialist response to them
-		//String uploaderEmailAddress = e.getCreator().getPerson()
-		// 		.getAttribute("Contact Email").getValue();
+		//String uploaderEmailAddress = q.getEncounter().getCreator()
+    	//		.getPerson().getAttribute("Contact Email").getValue();
     	boolean email = false;
 		String uploaderEmailAddress = null;
 		Encounter e = q.getEncounter();
@@ -405,8 +405,8 @@ public class SaveResponseServlet extends HttpServlet {
 	    		+"\nReferring Clinician: " + q.getCreator().getGivenName() 
 	    			+" " + q.getCreator().getFamilyName() 
 	    		+"\nPatient ID: " + patientId  
-	    		//+"\nName: " + q.getEncounter().getPatient().getGivenName() + " " 
-	    		//+q.getEncounter().getPatient().getFamilyName() 
+	    		+"\nName: " + q.getEncounter().getPatient().getGivenName() + " " 
+	    		+q.getEncounter().getPatient().getFamilyName() 
 	    		+"\nAge: " + q.getEncounter().getPatient().getAge().toString() 
 	    		+"\nSite: " + e.getLocation().getDisplayString() 
 	    		+"\n\nDate of Specialist Consult: " 
