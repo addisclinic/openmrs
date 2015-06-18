@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.sana.queue">
+
+	<class name="DateItems" table="date_items">
+		<id name="id" type="int" column="id">
+			<generator class="assigned" />
+		</id>
+		<property name="textName" type="java.lang.String" column="textname" 
+			not-null="false"/>
+		<property name="days" type="java.lang.Integer" column="days" 
+			not-null="false"/>
+		<property name="months" type="java.lang.Integer" column="months" 
+			not-null="false"/>
+		
+		</class>
+		</hibernate-mapping>

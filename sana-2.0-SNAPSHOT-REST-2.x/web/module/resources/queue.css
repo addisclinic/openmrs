@@ -1,0 +1,15 @@
+.row-even {
+    background-color: #fff;
+}
+
+.row-odd {
+    background-color: #ddd;
+}
+
+#message {
+    font-size: 10pt;
+}
+
+.mediaList, .mediaList li {
+    display: inline;
+}
