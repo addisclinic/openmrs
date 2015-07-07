@@ -33,7 +33,7 @@
     }
    
    function sortretain(){
-	    //alert("SortRetain:");
+        //alert("SortRetain:");
         var frm1=document.forms['queueForm'].elements;
         var sortvar1=frm1['sortname']; 
         if(document.getElementById("hidsortid").value == "" 
@@ -41,8 +41,8 @@
             //alert("SortRetain: if");
             sortvar1[1].checked = true;
         } else {
-        	sortvar1[0].checked = true;  
-        	// alert("SortRetain:else ");
+            sortvar1[0].checked = true;  
+            // alert("SortRetain:else ");
         }
     }
 
@@ -51,10 +51,10 @@
       var frm=document.forms['queueForm'].elements;
       var sortvar=frm['sortname'];
       if(sortvar[0].checked){
-    	  //alert("LIFO");
+          //alert("LIFO");
         queueForm.hidsortid.value=0;
       } else {
-    	 //alert("FIFO");
+         //alert("FIFO");
         queueForm.hidsortid.value=1;
       }
         document.forms["queueFormid"].submit();
@@ -78,24 +78,24 @@
         if(document.getElementById("gotopageid").value*1 <=0 
                 || isNaN(document.getElementById("gotopageid").value)) {
             alert("Please Enter a Positive Numeric Value");
-        	document.getElementById("gotopageid").value = "";
-        	return false;
+            document.getElementById("gotopageid").value = "";
+            return false;
         } else {
-	    	var pageno = document.getElementById("gotopageid").value*1;
-	    	var count = pageno*queuelimit;
-	    	var substract = pageno-1;
-	    	if(pageno >=2) {
-		    	document.getElementById("hidprevid").value = 
-			    	count-queuelimit-substract;
-		    	document.getElementById("hidnextid").value = 
-			    	count-queuelimit-substract;
-	    	} else {
-		    	document.getElementById("hidprevid").value =0;
-		    	document.getElementById("hidnextid").value =0;
-	    	}
-	    	//alert(document.getElementById("hidprevid").value);
-	    	return true;
-    	}
+            var pageno = document.getElementById("gotopageid").value*1;
+            var count = pageno*queuelimit;
+            var substract = pageno-1;
+            if(pageno >=2) {
+                document.getElementById("hidprevid").value = 
+                    count-queuelimit-substract;
+                document.getElementById("hidnextid").value = 
+                    count-queuelimit-substract;
+            } else {
+                document.getElementById("hidprevid").value =0;
+                document.getElementById("hidnextid").value =0;
+            }
+            //alert(document.getElementById("hidprevid").value);
+            return true;
+        }
     }
 
     // Resets the prev, next and goto hidden pagenation fields
@@ -117,17 +117,17 @@
             document.getElementById("hidprevid").value = 0;
               //document.getElementById("hidnextid").value = queuelistcount;
         } else {
-	         //document.getElementById("hidprevid").value = 
-	         // document.getElementById("hidnextid").value;
-	         var next=document.getElementById("hidnextid").value;
-	         if(document.getElementById("queuelimitid").value == "") {
-	            var addi = queuelistcount*1;  
-	         } else {
-	            var addi = document.getElementById("hidnextid").value*1;
-	         }
-	         document.getElementById("hidprevid").value = 
-		     document.getElementById("hidprevid").value*1+addi*1-1;
-	         //document.getElementById("hidnextid").value = next*1+addi*1-1;
+             //document.getElementById("hidprevid").value = 
+             // document.getElementById("hidnextid").value;
+             var next=document.getElementById("hidnextid").value;
+             if(document.getElementById("queuelimitid").value == "") {
+                var addi = queuelistcount*1;  
+             } else {
+                var addi = document.getElementById("hidnextid").value*1;
+             }
+             document.getElementById("hidprevid").value = 
+             document.getElementById("hidprevid").value*1+addi*1-1;
+             //document.getElementById("hidnextid").value = next*1+addi*1-1;
        }
     }
     
@@ -160,78 +160,78 @@
     }
 
     //for storing procedure string text.
-	function clickprocedure(smsrow) {
-		//var selIdx = smsrow.selectedIndex;
+    function clickprocedure(smsrow) {
+        //var selIdx = smsrow.selectedIndex;
         //var selOption = smsrow.options[selIdx];
-  		//alert("The selected option is " + smsrow);
-		document.getElementById("proid").value = smsrow;
-	}
+        //alert("The selected option is " + smsrow);
+        document.getElementById("proid").value = smsrow;
+    }
 
     // Gets the selected value from the Procedure selection combo
-	function onChangeSelectedProcedure(){
-	    var selIndex = document.getElementById("combopro").selectedIndex;
-	    var selValue = document.getElementById("combopro").options[selIndex].value;
+    function onChangeSelectedProcedure(){
+        var selIndex = document.getElementById("combopro").selectedIndex;
+        var selValue = document.getElementById("combopro").options[selIndex].value;
         document.getElementById("proid").value = selValue;
         document.forms["queueFormid"].submit();
-	}
-	
-	// for storing days and months in hidden fields.
-	function clickdatefield(d,m){
-		//alert("The date : " + d + " "+ m);
-		document.getElementById("daysid").value = d;
-		document.getElementById("monthid").value = m;
-		document.getElementById("daysarcid").value = "";
-	}
+    }
+    
+    // for storing days and months in hidden fields.
+    function clickdatefield(d,m){
+        //alert("The date : " + d + " "+ m);
+        document.getElementById("daysid").value = d;
+        document.getElementById("monthid").value = m;
+        document.getElementById("daysarcid").value = "";
+    }
 
-	// Sets the hidden day range fields
-	function clickdatefieldarc(d,m){
-	     document.getElementById("daysid").value = "";
-	     document.getElementById("daysarcid").value = d;
-	}
-	
-	//storing the selected(checked) IDs for archieving.
+    // Sets the hidden day range fields
+    function clickdatefieldarc(d,m){
+         document.getElementById("daysid").value = "";
+         document.getElementById("daysarcid").value = d;
+    }
+    
+    //storing the selected(checked) IDs for archieving.
     var temp = new Array();
-	function clickar(chk){
-		//alert(chk.value);
-		if(chk.checked){
-			document.getElementById("chklistid").value += chk.value + ";";
-			//alert(document.getElementById("chklistid").value);
-		}
-	}
+    function clickar(chk){
+        //alert(chk.value);
+        if(chk.checked){
+            document.getElementById("chklistid").value += chk.value + ";";
+            //alert(document.getElementById("chklistid").value);
+        }
+    }
 
-	// Toggles selected state of all items currently visible in the queue to
-	// true. Stores all the ids in the hidden chklistid field.
-	function checkall(chk,checknone)
-	{
-		if(checknone.checked)
-			checknone.checked = false;
-		document.getElementById("chklistid").value = "";
-		//alert("Checkbox lenght : "+chk.length);			
-		for(var i = 0  ; i < chk.length ; i ++)
-		{
-			chk[i].checked = true;
-			document.getElementById("chklistid").value += chk[i].value + ";";
-		}
-		//alert(document.getElementById("chklistid").value);
-	} 
-	
-	// Toggles selected state of all items currently visible in the queue to
+    // Toggles selected state of all items currently visible in the queue to
+    // true. Stores all the ids in the hidden chklistid field.
+    function checkall(chk,checknone)
+    {
+        if(checknone.checked)
+            checknone.checked = false;
+        document.getElementById("chklistid").value = "";
+        //alert("Checkbox lenght : "+chk.length);           
+        for(var i = 0  ; i < chk.length ; i ++)
+        {
+            chk[i].checked = true;
+            document.getElementById("chklistid").value += chk[i].value + ";";
+        }
+        //alert(document.getElementById("chklistid").value);
+    } 
+    
+    // Toggles selected state of all items currently visible in the queue to
     // false. Removes all the ids in the hidden chklistid field. 
     // chklistid is a semi-colon separated list
-	function checknone(chk, checkall){
-		if(checkall.checked)
-			checkall.checked = false;
-		for(var i = 0 ; i < chk.length ; i ++)
-			chk[i].checked = false;
-		document.getElementById("chklistid").value = "";
-	}
+    function checknone(chk, checkall){
+        if(checkall.checked)
+            checkall.checked = false;
+        for(var i = 0 ; i < chk.length ; i ++)
+            chk[i].checked = false;
+        document.getElementById("chklistid").value = "";
+    }
 
-	// Deprecated?
-	function checkshall(checkarchive){
-		checkarchive.checked = false;
-	}
+    // Deprecated?
+    function checkshall(checkarchive){
+        checkarchive.checked = false;
+    }
 
-	// Deprecated?
-	function checkarchived(checkshowall){
-		checkshowall.checked = false;
-	}
+    // Deprecated?
+    function checkarchived(checkshowall){
+        checkshowall.checked = false;
+    }

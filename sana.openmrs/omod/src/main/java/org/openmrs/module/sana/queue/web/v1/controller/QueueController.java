@@ -71,52 +71,30 @@ public class QueueController {
         return q;
     }
 
-    
-
-    @RequestMapping(value = "queue.form")//,method = RequestMethod.POST)
+    @RequestMapping(value = "queue.form")
     public ModelAndView onRequest(HttpServletRequest request, 
         HttpServletResponse response) 
     {
+        log.warn("In Method: onRequest()");
         return onRequestInternal(request, response, QueueItemStatus.NEW);
     }
 
-    @RequestMapping(value = "queueClosed.form")//,method = RequestMethod.POST)
+    @RequestMapping(value = "queueClosed.form")
     public ModelAndView onClosedRequest(HttpServletRequest request, 
         HttpServletResponse response) 
     {
+        log.warn("In Method: onClosedRequest()");
         return onRequestInternal(request, response, QueueItemStatus.CLOSED);
     }
 
-    @RequestMapping(value = "queueDeferred.form")//,method = RequestMethod.POST)
+    @RequestMapping(value = "queueDeferred.form")
     public ModelAndView onDeferredRequest(HttpServletRequest request, 
         HttpServletResponse response) 
     {
+        log.warn("In Method: onDeferredRequest()");
         return onRequestInternal(request, response, QueueItemStatus.DEFERRED);
     }
-
     
-    @RequestMapping(value = "queue.form",method = RequestMethod.GET)
-    public ModelAndView onGetForm(HttpServletRequest request, 
-        HttpServletResponse response) 
-    {
-        return onRequestInternal(request, response, QueueItemStatus.NEW);
-    }
-    
-    @RequestMapping(value = "queueClosed.form",method = RequestMethod.GET)
-    public ModelAndView onGetClosedForm(HttpServletRequest request, 
-        HttpServletResponse response) 
-    {
-        return onRequestInternal(request, response, QueueItemStatus.CLOSED);
-    }
-
-
-    @RequestMapping(value = "queueDeferred.form",method = RequestMethod.GET)
-    public ModelAndView onGetDeferredForm(HttpServletRequest request, 
-        HttpServletResponse response) 
-    {
-        return onRequestInternal(request, response, QueueItemStatus.DEFERRED);
-    }
-
     public static final String ORDER_BY = "hidsortname";
     public static final String LIMIT = "limit";
     public static final String START = "gotopagename";
@@ -128,204 +106,218 @@ public class QueueController {
     public static final String FORMAT = "disformate";
 
     public static final String OBJECTS = "queueItems";
-    public static final String PROCEDURES = "proceduers";
+    public static final String PROCEDURES = "procedures";
     public static final String DATES = "dates";
     public static final String SIZE = "queuesize";
+    public static final String MAX_SIZE = "maxsize";
     public static final String PAGES = "count";
     public static final String PAGE = "start";
+    public static final String QUEUE_STATUS = "queuestatus";
 
     public ModelAndView onRequestInternal(HttpServletRequest request,
         HttpServletResponse response, QueueItemStatus status) 
     {
+        log.debug("In Method: onRequestInternal()");
         int defcount = Integer.parseInt(Context.getAdministrationService()
                         .getGlobalProperty(Property.DISPLAY_COUNT));
 
-		// ------------------------------------------------------------
-		// Set max queue size and sort order Lifo or fifo
-		int queuelistcount = Integer.parseInt(Context
-				.getAdministrationService().getGlobalProperty(
-						Property.MAX_QUEUE_ITEMS));
-		Integer queuelistcountObj = new Integer(queuelistcount);
-		// String queueLimit = request.getParameter(LIMIT);
-		int sortvalue = 0;
+        log.warn("...Queue status" + status);
+        // ------------------------------------------------------------
+        // Set max queue size and sort order Lifo or fifo
+        int queuelistcount = Integer.parseInt(Context
+                .getAdministrationService().getGlobalProperty(
+                        Property.MAX_QUEUE_ITEMS));
+        Integer queuelistcountObj = new Integer(queuelistcount);
+        //String queueSize = request.getParameter(SIZE);
+        int sortvalue = 0;
 
-		String sortstring = getParameter(request, ORDER_BY);
-		if (!sortstring.isEmpty()) {
-			sortvalue = Integer.parseInt(sortstring);
-		} else {
-			sortvalue = 1;
-		}
-		String checkProo = "SHOW ALL";
-		int iArchieveState = 1;
-		int endvalue = queuelistcount;
+        String sortstring = getParameter(request, ORDER_BY);
+        if (!sortstring.isEmpty()) {
+            sortvalue = Integer.parseInt(sortstring);
+        } else {
+            sortvalue = 1;
+        }
+        String checkProo = "SHOW ALL";
+        int iArchieveState = 1;
+        int endvalue = queuelistcount;
 
-		// the number per page
-		String limit = getParameter(request, LIMIT);
-		if (!limit.isEmpty())
-			endvalue = Integer.parseInt(limit);
-		int startvalue = 0;
+        // the number per page
+        String limit = getParameter(request, LIMIT);
+        if (!limit.isEmpty())
+            endvalue = Integer.parseInt(limit);
+        else
+            limit = String.valueOf(queuelistcount);
+        int startvalue = 0;
 
-		// the starting page
-		String start = getParameter(request, START);
-		if (!start.isEmpty()) {
-			int substract = Integer.parseInt(limit);
-			if (limit.length() > 0) {
-				endvalue = Integer.parseInt(limit);
-				startvalue = Integer.parseInt(start) * endvalue;
-				startvalue = startvalue - endvalue - (substract - 1);
-			} else {
-				startvalue = Integer.parseInt(start) * queuelistcount;
-				startvalue = startvalue - endvalue - (substract - 1);
-			}
-		} else if (request.getParameter("hidprevname") != null
-				&& request.getParameter("hidprevname") != "") {
-			startvalue = Integer.parseInt(request.getParameter("hidprevname"));
-		}
-		StringBuffer sbr = null;
-		// TODO This should go into a POST call
-		if (request.getParameter("subarchivename") != null) // checking archived
-															// button is
-															// submitted or not.
-		{
-			this.handleArchiveRequest(request, response);
-		}
+        // the starting page
+        String start = getParameter(request, START);
+        if (!start.isEmpty()) {
+            int substract = Integer.parseInt(limit);
+            if (limit.length() > 0) {
+                endvalue = Integer.parseInt(limit);
+                startvalue = Integer.parseInt(start) * endvalue;
+                startvalue = startvalue - endvalue - (substract - 1);
+            } else {
+                startvalue = Integer.parseInt(start) * queuelistcount;
+                startvalue = startvalue - endvalue - (substract - 1);
+            }
+        } else if (request.getParameter("hidprevname") != null
+                && request.getParameter("hidprevname") != "") {
+            startvalue = Integer.parseInt(request.getParameter("hidprevname"));
+        }
+        StringBuffer sbr = null;
+        // TODO This should go into a POST call
+        if (request.getParameter("subarchivename") != null) // checking archived
+                                                            // button is
+                                                            // submitted or not.
+        {
+            this.handleArchiveRequest(request, response);
+        }
 
-		String strprocedure = getParameter(request, "proname");
-		String checkPro = getParameter(request, "comboPro");
-		String checkDate = getParameter(request, "comboDate");
-		String strArchieve = getParameter(request, "archive");
-		if (!strArchieve.isEmpty()) {
-			iArchieveState = 1;
-			if (strArchieve.equalsIgnoreCase("Show ALL"))
-				iArchieveState = 0;
-			else if (strArchieve.equalsIgnoreCase("Show InActive"))
-				iArchieveState = 2;
-			else if (strArchieve.equalsIgnoreCase("Show Active"))
-				iArchieveState = 1;
-		}
-		// System.out.println("##iArchieveState :"+iArchieveState);
-		int strdate = 365;
+        String strprocedure = getParameter(request, "proname");
+        String checkPro = getParameter(request, "comboPro");
+        String checkDate = getParameter(request, "comboDate");
+        String strArchieve = getParameter(request, "archive");
+        if (!strArchieve.isEmpty()) {
+            iArchieveState = 1;
+            if (strArchieve.equalsIgnoreCase("Show ALL"))
+                iArchieveState = 0;
+            else if (strArchieve.equalsIgnoreCase("Show InActive"))
+                iArchieveState = 2;
+            else if (strArchieve.equalsIgnoreCase("Show Active"))
+                iArchieveState = 1;
+        }
+        // System.out.println("##iArchieveState :"+iArchieveState);
+        int strdate = 365;
 
-		int strmonth = 0;
+        int strmonth = 0;
 
-		int days = strdate;
-		defcount = days;
-		String procedure = null;
-		if (strprocedure != null && strprocedure != "")
-			procedure = strprocedure;
+        int days = strdate;
+        defcount = days;
+        String procedure = null;
+        if (strprocedure != null && strprocedure != "")
+            procedure = strprocedure;
 
-		if (!checkPro.isEmpty())
-			checkProo = checkPro;
+        if (!checkPro.isEmpty())
+            checkProo = checkPro;
 
-		int totalrows = 0;
-		QueueItemResource resource = getResource();
-		List<QueueItem> items = null;
-		switch (status) {
-		case CLOSED:
-			items = resource.closed(procedure, defcount, checkProo, checkDate,
-					iArchieveState, startvalue, endvalue, sortvalue);
-			totalrows = resource.getProDateRowsClosedCount(procedure, defcount,
-					checkProo, checkDate, iArchieveState, startvalue, endvalue,
-					sortvalue);
-			break;
-		case DEFERRED:
-			items = resource.deferred(procedure, defcount, checkProo,
-					checkDate, iArchieveState, startvalue, endvalue, sortvalue);
-			totalrows = resource.getProDateRowsDeferredCount(procedure,
-					defcount, checkProo, checkDate, iArchieveState, startvalue,
-					endvalue, sortvalue);
-			break;
-		default:
-			items = resource.all(procedure, defcount, checkProo, checkDate,
-					iArchieveState, startvalue, endvalue, sortvalue);
-			totalrows = resource.getProDateRowsCount(procedure, defcount,
-					checkProo, checkDate, iArchieveState, startvalue, endvalue,
-					sortvalue);
-			break;
-		}
-		Map<String,Object> map = new HashMap<String,Object>();
-		int pageno = 1;
-		if (startvalue > 0 && startvalue < endvalue)
-			pageno = 2;
-		if (startvalue > endvalue) {
-			pageno = startvalue / (endvalue - 1);
-			pageno = pageno + 1;
-		}
+        int totalrows = 0;
+        QueueItemResource resource = getResource();
+        List<QueueItem> items = null;
+        switch (status) {
+        case CLOSED:
+            log.info("...getting CLOSED items");
+            items = resource.closed(procedure, defcount, checkProo, checkDate,
+                    iArchieveState, startvalue, endvalue, sortvalue);
+            totalrows = resource.getProDateRowsClosedCount(procedure, defcount,
+                    checkProo, checkDate, iArchieveState, startvalue, endvalue,
+                    sortvalue);
+            break;
+        case DEFERRED:
+            log.info("...getting DEFERRED items");
+            items = resource.deferred(procedure, defcount, checkProo,
+                    checkDate, iArchieveState, startvalue, endvalue, sortvalue);
+            totalrows = resource.getProDateRowsDeferredCount(procedure,
+                    defcount, checkProo, checkDate, iArchieveState, startvalue,
+                    endvalue, sortvalue);
+            break;
+        default:
+            log.info("...getting ALL items");
+            items = resource.all(procedure, defcount, checkProo, checkDate,
+                    iArchieveState, startvalue, endvalue, sortvalue);
+            totalrows = resource.getProDateRowsCount(procedure, defcount,
+                    checkProo, checkDate, iArchieveState, startvalue, endvalue,
+                    sortvalue);
+            break;
+        }
+        Map<String,Object> map = new HashMap<String,Object>();
+        int pageno = 1;
+        if (startvalue > 0 && startvalue < endvalue)
+            pageno = 2;
+        if (startvalue > endvalue) {
+            pageno = startvalue / (endvalue - 1);
+            pageno = pageno + 1;
+        }
 
-		int count = 1;
-		while (totalrows / (endvalue) > 0) {
-			totalrows = totalrows - endvalue + 1;
-			count++;
-		}
-		
-		List<QueueItem> procedurelist = resource.all();
-		List<DateItems> dateitems = resource.dateItems();
-		
-		map.put(OBJECTS, items);
-		map.put(PROCEDURES, procedurelist);
-		map.put(DATES, dateitems);
-		map.put(LIMIT, queuelistcountObj);
-		map.put(SIZE, items.size());
-		map.put(PAGES, count);
-		map.put(PAGE, pageno);
+        int count = 1;
+        while (totalrows / (endvalue) > 0) {
+            totalrows = totalrows - endvalue + 1;
+            count++;
+        }
+        
+        List<QueueItem> procedurelist = resource.all();
+        List<DateItems> dateitems = resource.dateItems();
+        
+        map.put(OBJECTS, items);
+        map.put(PROCEDURES, procedurelist);
+        map.put(DATES, dateitems);
+        map.put(LIMIT, Integer.parseInt(limit));
+        map.put(SIZE, items.size());
+        map.put(MAX_SIZE, queuelistcountObj);
+        map.put(PAGES, count);
+        map.put(PAGE, pageno);
+        
+        // set the status
+        map.put(QUEUE_STATUS, status);
+        
+        request.setAttribute("proname", "SHOW ALL");
+        request.setAttribute("proname", "SHOW ALL");
+        log.debug("Returning " + items.size() + " " +status + " queue items");
 
-		request.setAttribute("proname", "SHOW ALL");
-		log.debug("Returning " + items.size() + " deferred queue items");
+        if (request.getParameter(FORMAT) == null
+                || request.getParameter(FORMAT).equalsIgnoreCase("htmlformat")) {
+            // System.out.println("formate:"+request.getParameter("disformate"));
 
-		if (request.getParameter(FORMAT) == null
-				|| request.getParameter(FORMAT).equalsIgnoreCase("htmlformat")) {
-			// System.out.println("formate:"+request.getParameter("disformate"));
+            return new ModelAndView(HTML_SUCCESS_VIEW, "map", map);
+        } else if (request.getParameter(FORMAT).equalsIgnoreCase("Jsonformat")) {
+            sbr = QueueItemJson.encode(items);
+            Map<String,Object> map1 = new HashMap<String,Object>();
+            map1.put("sbr", sbr.toString());
+            return new ModelAndView(JSON_SUCCESS_VIEW, "sbr", map1);
+        }
 
-			return new ModelAndView(HTML_SUCCESS_VIEW, "map", map);
-		} else if (request.getParameter(FORMAT).equalsIgnoreCase("Jsonformat")) {
-			sbr = QueueItemJson.encode(items);
-			Map<String,Object> map1 = new HashMap<String,Object>();
-			map1.put("sbr", sbr.toString());
-			return new ModelAndView(JSON_SUCCESS_VIEW, "sbr", map1);
-		}
+        else if (request.getParameter(FORMAT).equalsIgnoreCase("Xmlformat")) {
 
-		else if (request.getParameter(FORMAT).equalsIgnoreCase("Xmlformat")) {
+            sbr = QueueItemXml.encode(items);
+            PatientResource pr = new PatientResource();
+            try {
 
-			sbr = QueueItemXml.encode(items);
-			PatientResource pr = new PatientResource();
-			try {
+                PrintWriter pw = response.getWriter();
+                pr.printPatientList(pw, sbr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-				PrintWriter pw = response.getWriter();
-				pr.printPatientList(pw, sbr);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            Map<String,Object> map1 = new HashMap<String,Object>();
 
-			Map<String,Object> map1 = new HashMap<String,Object>();
+            map1.put("sbr", sbr);
+            return new ModelAndView(XML_SUCCESS_VIEW, "sbr", map1);
+        }
+        //System.gc();
+        return null;
 
-			map1.put("sbr", sbr);
-			return new ModelAndView(XML_SUCCESS_VIEW, "sbr", map1);
-		}
-		//System.gc();
-		return null;
-
-	}
+    }
     
-	public ModelAndView handleArchiveRequest(HttpServletRequest request,
-			HttpServletResponse response) {
+    public ModelAndView handleArchiveRequest(HttpServletRequest request,
+            HttpServletResponse response) {
 
-		String checkedids = request.getParameter("chklist");
-		if (checkedids != null && checkedids != "") {
-			String strcheckedlist = checkedids;
-			String[] temp;
-			temp = strcheckedlist.split(";");
-			int intarr[] = new int[temp.length];
-			for (int i = 0; i < temp.length; i++) {
-				intarr[i] = Integer.parseInt(temp[i]);
-			}
-			QueueItemService queueService = Context
-					.getService(QueueItemService.class);
-			queueService.getUnArchivedRows(intarr);// function for "Archiving"
-													// intarr[] values.
-		}
-		return null;
-	}
-	
+        String checkedids = request.getParameter("chklist");
+        if (checkedids != null && checkedids != "") {
+            String strcheckedlist = checkedids;
+            String[] temp;
+            temp = strcheckedlist.split(";");
+            int intarr[] = new int[temp.length];
+            for (int i = 0; i < temp.length; i++) {
+                intarr[i] = Integer.parseInt(temp[i]);
+            }
+            QueueItemService queueService = Context
+                    .getService(QueueItemService.class);
+            queueService.getUnArchivedRows(intarr);// function for "Archiving"
+                                                    // intarr[] values.
+        }
+        return null;
+    }
+    
 
     
     /**
@@ -338,11 +330,11 @@ public class QueueController {
      * @return a request parameter or default value
      */
     String getParamOrDefault(HttpServletRequest request, String name, 
-    		String defaultValue)
+            String defaultValue)
     {
-    	String value = request.getParameter(name);
-    	value = (value == null || value == "")? defaultValue: value;
-    	return value;
+        String value = request.getParameter(name);
+        value = (value == null || value == "")? defaultValue: value;
+        return value;
     }
     
     /**
@@ -353,13 +345,13 @@ public class QueueController {
      * @return the parameter value or ""
      */
     String getParameter(HttpServletRequest request, String name){
-    	return getParamOrDefault(request, name, "");
+        return getParamOrDefault(request, name, "");
     }
     
     //----------------------- Test methods ------------------------------------
     private Patient pickRandomPatient() {
         PatientService pservice = (PatientService)Context.getService(
-        		PatientService.class);
+                PatientService.class);
         //List<PatientIdentifier> identifiers = pservice.getPatientIdentifiers(null, new Vector<PatientIdentifierType>(), null, null, null);
         /*
         if(identifiers.size() > 0) {
@@ -377,7 +369,7 @@ public class QueueController {
         ObsService oservice = (ObsService)Context.getService(ObsService.class);
         
         LocationService lservice = (LocationService)Context.getService(
-        		LocationService.class);
+                LocationService.class);
         ConceptService cservice = Context.getConceptService();
         
         Obs o = new Obs();
@@ -395,7 +387,7 @@ public class QueueController {
         ObsService oservice = (ObsService)Context.getService(ObsService.class);
         
         LocationService lservice = (LocationService)Context.getService(
-        		LocationService.class);
+                LocationService.class);
         ConceptService cservice = Context.getConceptService();
         
         Obs o = new Obs();
@@ -415,19 +407,19 @@ public class QueueController {
     }
     private void createFakeQueueItem() throws IOException {
         QueueItemService qservice = (QueueItemService)Context.getService(
-        		QueueItemService.class);
+                QueueItemService.class);
         
         Patient p = pickRandomPatient();
         Encounter e = new Encounter();
         e.setEncounterDatetime(new Date());
         e.setDateCreated(new Date());
         e.setLocation(((LocationService)Context.getService(
-        		LocationService.class)).getDefaultLocation());
+                LocationService.class)).getDefaultLocation());
         e.setPatient(p);
         e.setCreator(Context.getAuthenticatedUser());
         e.setForm(Context.getFormService().getAllForms().get(0));
         e.setEncounterType(Context.getEncounterService()
-        		.getAllEncounterTypes().get(0));
+                .getAllEncounterTypes().get(0));
         e.setProvider(Context.getAuthenticatedUser());
         
         Context.getEncounterService().saveEncounter(e);

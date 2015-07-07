@@ -128,17 +128,19 @@ public class LexiconServlet extends HttpServlet {
     			newCsvFile = f;
     		else if (name.equals(Form.CSV_FILE_RETIRED))
     			retiredCsvFile = f;
+    		// Concept source
      		else if (name.equals(Form.CONCEPT_SOURCE_NAME))
      			conceptSourceName = f.getString();
      		else if (name.equals(Form.CONCEPT_SOURCE_CODE))
      			conceptSourceCode = f.getString();
      		else if (name.equals(Form.CONCEPT_SOURCE_DESCRIPTION))
      			conceptSourceDescription = f.getString();
+    		// Concept fields
      		else if (name.equals(Form.COLUMN_CONCEPT_NAME))
      			colConceptName = f.getString();
-     		else if (name.equals(Form.COLUMN_CONCEPT_NAME))
-     			colConceptClass = f.getString();
      		else if (name.equals(Form.COLUMN_CONCEPT_CLASS))
+     			colConceptClass = f.getString();
+     		else if (name.equals(Form.COLUMN_ID_NUM))
      			colIdNum = f.getString();     		
      		else if (name.equals(Form.COLUMN_CONCEPT_DESCRIPTION))
          		colConceptDescription = f.getString();
@@ -358,36 +360,63 @@ public class LexiconServlet extends HttpServlet {
         //Initialize variables for concept creation
         String conceptName = "";
         String idNum = "";
-        String conceptClassName = "Misc";
+        String conceptClassName = "Test";
         String conceptDescription = "NA";
         
     	//Iterate through each comma separated string of the line
     	while(stokenizer.hasMoreTokens())
     	{
+    		/*
+    		if(stokenizer.hasMoreElements()){
+    			if(String.valueOf(stokenizer.nextElement()).compareTo(",") == 0){
+    	    		tokenNumber++;
+    	    		continue;
+    			}
+    		}
+    		*/
     		token = stokenizer.nextToken();
     		
     		//If this is the element in the column for ID numbers, save the ID
     		if(tokenNumber == columnIDNum){
     			idNum = token;
-    			output.println("Concept Source Mapping ID number: " + idNum);
+    			output.println("Concept Source Mapping ID number: Read:" + token + " Using: " +idNum);
     		}
     		//If this is the element in the column for concept names, save the name
     		else if(tokenNumber == columnName){
     			conceptName = token.toUpperCase().trim();
-    			output.println("Concept name: " + conceptName);
+    			output.println("Concept name: Read:" + token + " Using: " + conceptName);
     		}
     		else if(tokenNumber == columnType)
     		{
-    			if(token.toLowerCase().indexOf("disorder") != -1)
+    			if(token.compareToIgnoreCase("disorder") == 0)
     				conceptClassName = "Diagnosis";
-    			else if(token.toLowerCase().indexOf("finding") != -1)
+    			else if(token.compareToIgnoreCase("diagnosis") == 0)
+    				conceptClassName = "Diagnosis";
+    			else if(token.compareToIgnoreCase("finding") == 0)
     				conceptClassName = "Finding";
-    			output.println("Concept class: " + conceptClassName);
+    			else if(token.compareToIgnoreCase("test") == 0)
+    				conceptClassName = "Test";
+    			else if(token.compareToIgnoreCase("procedure") == 0)
+    				conceptClassName = "Procedure";
+    			else if(token.compareToIgnoreCase("drug") == 0)
+    				conceptClassName = "Drug";
+    			else if(token.compareToIgnoreCase("question") == 0)
+    				conceptClassName = "Question";
+    			else if(token.compareToIgnoreCase("symptom") == 0)
+    				conceptClassName = "Sympton";
+    			else if(token.compareToIgnoreCase("symptom/finding") == 0)
+    				conceptClassName = "Symptom/Finding";
+    			else if(token.compareToIgnoreCase("specimen") == 0)
+    				conceptClassName = "Specimen";
+    			else if(token.compareToIgnoreCase("misc order") == 0)
+    				conceptClassName = "Misc Order";
+    			
+    			output.println("Concept class: Read:" + token + " Using: " +conceptClassName);
     		}
     		else if(tokenNumber == columnDescription)
     		{
     			conceptDescription = token.trim();
-    			output.println("Concept description: " + conceptDescription);
+    			output.println("Concept description: Read:" + token + " Using: " + conceptDescription);
     		}
     		tokenNumber++;
     	}

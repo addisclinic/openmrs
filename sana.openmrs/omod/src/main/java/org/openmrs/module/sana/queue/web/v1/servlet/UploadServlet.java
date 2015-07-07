@@ -511,9 +511,20 @@ public class UploadServlet extends HttpServlet {
         Form form = getForm(formName);
         e.setForm(form);
         
-        // TODO Set a Globabl Property for Default 
-        e.setEncounterType(Context.getEncounterService().getAllEncounterTypes()
-        		.get(0));
+        // TODO Set a Global Property for Default
+        EncounterType eType = null;
+        eType = Context.getEncounterService().getEncounterType(formName);
+        if(eType == null){
+             // The description for the new EncounterType 
+             // will need to be filled in manually
+             String description = "TODO";
+             eType =  new EncounterType(formName, description);
+             Context.getEncounterService().saveEncounterType(eType);
+        }
+        e.setEncounterType(eType);
+        //e.setEncounterType(Context.getEncounterService().getAllEncounterTypes()
+        //		.get(0));
+        
         Context.getEncounterService().saveEncounter(e);
         Integer encounterId = e.getId();
         Context.evictFromSession(e);
