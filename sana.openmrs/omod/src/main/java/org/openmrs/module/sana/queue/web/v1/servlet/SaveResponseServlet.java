@@ -76,7 +76,8 @@ public class SaveResponseServlet extends HttpServlet {
         String doctorDiagnosis = request.getParameter("HiddenDiagnoses");
         String doctorUrgency = request.getParameter("Urgency");
         String doctorTreatment = request.getParameter("Treatment");
-        String doctorComments = request.getParameter("Comments");
+        String doctorAssessment = request.getParameter("Assessment");
+        String doctorRecommendations = request.getParameter("Recommendations");
         PrintWriter output = response.getWriter();
         
         QueueItemService queueService = Context.getService(
@@ -224,20 +225,20 @@ public class SaveResponseServlet extends HttpServlet {
         
         log.debug("doctorTreatment " + doctorTreatment);
         
-        if(doctorComments != null && !doctorComments.equals("")){
+        if(doctorAssessment != null && !doctorAssessment.equals("")){
         	//Create a new obs with the doctor's response
             Obs o = new Obs();
             o.setPerson(q.getPatient());
             o.setLocation(lservice.getDefaultLocation());
             
-            //Get DOCTOR COMMENTS concept
-            Concept commentsConcept = cservice.getConceptByName(
-            		"DOCTOR COMMENTS");
+            //Get DOCTOR ASSESSMENT concept
+            Concept assessmentConcept = cservice.getConceptByName(
+            		"DOCTOR ASSESSMENT");
             
-            if(commentsConcept != null)
-            	o.setConcept(commentsConcept);
+            if(assessmentConcept != null)
+            	o.setConcept(assessmentConcept);
             else{
-            	fail(output,"Couldn't find concept DOCTOR COMMENTS. Go to "
+            	fail(output,"Couldn't find concept DOCTOR ASSESSMENT. Go to "
             			+"Concept Dictionary and add this concept.");
             	return;
             }
@@ -245,28 +246,61 @@ public class SaveResponseServlet extends HttpServlet {
             o.setDateCreated(new Date());
             o.setObsDatetime(new Date());
             o.setCreator(Context.getAuthenticatedUser());
-            o.setValueText(doctorComments);
+            o.setValueText(doctorAssessment);
             o.setEncounter(e);
             //Update and save the encounter and obs
             e.addObs(o);       
             Context.getObsService().saveObs(o, "");
         }
         else{
-        	doctorComments = "";
+        	doctorAssessment = "";
         }
         
-        log.debug("doctorComments " + doctorComments);
+        log.debug("doctorAssessment " + doctorAssessment);
+        
+        if(doctorRecommendations != null && !doctorRecommendations.equals("")){
+        	//Create a new obs with the doctor's response
+            Obs o = new Obs();
+            o.setPerson(q.getPatient());
+            o.setLocation(lservice.getDefaultLocation());
+            
+            //Get DOCTOR RECOMMENDATIONS concept
+            Concept recommendationsConcept = cservice.getConceptByName(
+            		"DOCTOR RECOMMENDATIONS");
+            
+            if(recommendationsConcept != null)
+            	o.setConcept(recommendationsConcept);
+            else{
+            	fail(output,"Couldn't find concept DOCTOR RECOMMENDATIONS. Go to "
+            			+"Concept Dictionary and add this concept.");
+            	return;
+            }
+            
+            o.setDateCreated(new Date());
+            o.setObsDatetime(new Date());
+            o.setCreator(Context.getAuthenticatedUser());
+            o.setValueText(doctorRecommendations);
+            o.setEncounter(e);
+            //Update and save the encounter and obs
+            e.addObs(o);       
+            Context.getObsService().saveObs(o, "");
+        }
+        else{
+        	doctorRecommendations = "";
+        }
+        
+        log.debug("doctorRecommendations " + doctorRecommendations);
         
         //Set plan
         String plan = "";
-        if(doctorTreatment.equals("") && doctorComments.equals(""))
+        if(doctorTreatment.equals("") && doctorRecommendations.equals(""))
         	plan = "";
         else if(doctorTreatment.equals(""))
-            plan = doctorComments;
-        else if(doctorComments.equals(""))
+            plan = doctorRecommendations;
+        else if(doctorRecommendations.equals(""))
         	plan = doctorTreatment;
         else
-        	plan = doctorTreatment + ", " + doctorComments;
+        	plan = doctorTreatment + ", " + doctorRecommendations;
         
     	Context.getEncounterService().saveEncounter(e);
         q.setEncounter(e);
@@ -284,6 +318,7 @@ public class SaveResponseServlet extends HttpServlet {
     	 
     	// TODO Come up with a better way to trigger notification type
 		//Send sms
+		
 		try{
 			boolean sms = sendSMS(q, diagnosisList, plan, patientId);
 		} catch (ConnectException err) {
@@ -313,9 +348,6 @@ public class SaveResponseServlet extends HttpServlet {
     	response.sendRedirect(request.getContextPath() 
 				+  "/module/sana/queue/v1/queue.form");
     }
-    
-    
-    
     
     @Override
     protected void doGet(HttpServletRequest request, 
@@ -373,8 +405,8 @@ public class SaveResponseServlet extends HttpServlet {
 	    		+"\nReferring Clinician: " + q.getCreator().getGivenName() 
 	    			+" " + q.getCreator().getFamilyName() 
 	    		+"\nPatient ID: " + patientId  
-	    		+"\nName: " + q.getEncounter().getPatient().getGivenName() + " "  
-	    			+q.getEncounter().getPatient().getFamilyName() 
+	    		//+"\nName: " + q.getEncounter().getPatient().getGivenName() + " " 
+	    		//+q.getEncounter().getPatient().getFamilyName() 
 	    		+"\nAge: " + q.getEncounter().getPatient().getAge().toString() 
 	    		+"\nSite: " + e.getLocation().getDisplayString() 
 	    		+"\n\nDate of Specialist Consult: " 
