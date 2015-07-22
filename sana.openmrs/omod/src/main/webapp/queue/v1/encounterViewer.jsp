@@ -109,7 +109,6 @@ width:100%;
   border: 1px solid #6D9BC5;
   width: 28%;
   height: 100%;
-  float: left;
   background-color: #C6D9F1;
   overflow:auto;
   scrollbar-base-color: transparent;
@@ -119,8 +118,6 @@ width:100%;
 .rightBox {
   border: 1px solid #6D9BC5;
   width: 70%;
-  height: 100%;
-  float: left;
 }
 
 .bigContainer{
@@ -250,14 +247,23 @@ input.collapseButton {
     scrollbar-arrow-color: transparent;
 }
 
+#encounterHeader {
+	width: 100%;
+	font-size: x-large;
+}
+
 </style>
+
 <div class="bigContainer" id="container">
-	<div class="leftBox" id="leftContainer">
-		<h1><a href="${pageContext.request.contextPath}/patientDashboard.form?patientId=${encounter.queueItem.patient.patientId }">${encounter.queueItem.patient.familyName}, ${encounter.queueItem.patient.givenName}</a> (<spring:message code="sana.id" /> ${encounter.queueItem.patient.patientIdentifier}) ${encounter.queueItem.patient.age} ${encounter.queueItem.patient.gender}</h1>
+	<table>
+	<tr><td></td>
+	<td>
+		<div id="encounterHeader">Patient: <strong><a href="${pageContext.request.contextPath}/patientDashboard.form?patientId=${encounter.queueItem.patient.patientId }">${encounter.queueItem.patient.familyName}, ${encounter.queueItem.patient.givenName}</a> ${encounter.queueItem.patient.age} ${encounter.queueItem.patient.gender}</strong> &nbsp;&nbsp; Complaint: <strong>${encounter.queueItem.procedureTitle}</strong></div>		
+	</td></tr>
+	<tr><td class="leftBox" valign=top>
+	<div id="leftContainer">
 		<h3><spring:message code="sana.status" />: ${encounter.status}</h3>
 		<div id="pastDiagnoses" class="patientInfo"><p>${encounter.existingDiagnoses}</p></div>
-		<h3><spring:message code="sana.patient_visit_responses" /></h3>
-		<div id="patientInfoBox" class="blueBackground"><p>${encounter.patientResponses}</p></div>
 		<h3><spring:message code="sana.recommendations" /></h3>
 		<div id="diagnosisBox" class="blueBackground">
 			<p><spring:message code="sana.select_vocab" />  <select id="conceptSourceName" name="conceptSourceName"><c:forEach var="source" items="${encounter.conceptSources}"><option>${source}</option></c:forEach></select></p>
@@ -296,11 +302,14 @@ input.collapseButton {
 			</form>
 	 	</div>
 	</div>
-	
-	<div class="rightBox" id="rightContainer">
+	</td>
+	<td  class="rightBox" valign=top>
+	<div id="rightContainer">
+		<h3><spring:message code="sana.patient_visit_responses" /></h3>
+		<div id="patientInfoBox" class="blueBackground"><p>${encounter.patientResponses}</p></div>	
 		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 					id="TestViewer" 
-					width="100%" height="100%"
+					width="100%" height="700"
 					codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
 					<param name="movie" value="${pageContext.request.contextPath}/moduleResources/sana/MediaFileViewer2.swf" />
 					<param name="quality" value="high" />
@@ -323,6 +332,7 @@ input.collapseButton {
 					</embed>
 			</object>
 	</div>
+	</td></tr></table>
 </div>
 <div style="clear: both;"></div>
 <%@ include file="/WEB-INF/template/footer.jsp"%>
