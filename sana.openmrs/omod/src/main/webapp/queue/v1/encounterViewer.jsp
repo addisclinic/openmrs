@@ -252,6 +252,11 @@ input.collapseButton {
 	font-size: x-large;
 }
 
+#mediaViewer {
+	height:700px;
+	width: 100%;
+}
+
 </style>
 
 <div class="bigContainer" id="container">
@@ -307,9 +312,10 @@ input.collapseButton {
 	<div id="rightContainer">
 		<h3><spring:message code="sana.patient_visit_responses" /></h3>
 		<div id="patientInfoBox" class="blueBackground"><p>${encounter.patientResponses}</p></div>	
+		<div id="mediaViewer">
 		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 					id="TestViewer" 
-					width="100%" height="700"
+					width="100%" height="100%"
 					codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
 					<param name="movie" value="${pageContext.request.contextPath}/moduleResources/sana/MediaFileViewer2.swf" />
 					<param name="quality" value="high" />
@@ -331,6 +337,7 @@ input.collapseButton {
 						pluginspage="http://www.adobe.com/go/getflashplayer">
 					</embed>
 			</object>
+			</div>
 	</div>
 	</td></tr></table>
 </div>
