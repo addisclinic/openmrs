@@ -502,7 +502,7 @@
                                             <img border="0" src="${pageContext.request.contextPath }/moduleResources/sana/binaryThumbnail.png"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="${pageContext.request.contextPath }/moduleServlet/sana/complexObsServlet?obsId=${obs.obsId }&view=VIEW_THUMBNAIL"/>
+                                            <img src="${pageContext.request.contextPath }/moduleServlet/sana/complexObsServlet?obsId=${obs.obsId }&view=VIEW_IMAGE" width="200"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </a>
