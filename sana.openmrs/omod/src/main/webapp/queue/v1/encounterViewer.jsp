@@ -183,7 +183,6 @@ input.btn{
   font-size:11px;
   font-style:normal;
   font-family:verdana;
-  width: 25%;
 }
 
 input.t3{
@@ -300,9 +299,8 @@ input.collapseButton {
 					<textarea wrap="virtual" class="t1" name="Assessment" rows=3 required="True"></textarea><br><br>	
 					<spring:message code="sana.recommendations" />: <br>
 					<textarea wrap="virtual" class="t1" name="Recommendations" rows=3></textarea><br><br>
-					<input type="submit" value="Send" class="btn"/>
-					<input type="button" value="Back" class="btn" onClick="backToQueue()"/>
-					<input type="button" value="Retake" class="btn" onClick="retake()"/><br><br>
+					<input type="button" value="Send" class="btn" onClick="retake()"/>
+					<input type="submit" value="Send & Close" class="btn"/><br><br>
 				</p>
 			</form>
 	 	</div>
