@@ -81,7 +81,7 @@ public class EncounterFBO {
 			pResponses.put("FAMHX","");
 			pResponses.put("SOCHX","");
 			pResponses.put("ALLERGIES","");
-			pResponses.put("MEDICATION","");
+			pResponses.put("MEDICATIONS","");
 			pResponses.put("HEENT","");
 			pResponses.put("CONST","");
 			pResponses.put("CARDIO","");
