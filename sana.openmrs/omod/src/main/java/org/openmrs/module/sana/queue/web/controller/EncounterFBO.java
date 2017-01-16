@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -66,9 +67,41 @@ public class EncounterFBO {
 			ol.add(o);
 		}
 
+		Map<String, String> pResponses = new LinkedHashMap<String, String>();
+
         //Initialize patient response with date of initial encounter
-        patientResponses = "<b>Date of Encounter:</b><br>" 
-        		+ q.getDateCreated().toString().substring(0,10) + "<br><br>";        
+        pResponses.put("Date", "<b>Date of Encounter:</b><br>" 
+        		+ q.getDateCreated().toString().substring(0,10) + "<br><br>");
+
+		if(q.procedureTitle.equals("Physician to Physician Consult")) {
+			pResponses.put("SEX","");
+			pResponses.put("AGE","");
+			pResponses.put("CHIEFCOMPLAINT","");
+			pResponses.put("MEDHX","");
+			pResponses.put("FAMHX","");
+			pResponses.put("SOCHX","");
+			pResponses.put("ALLERGIES","");
+			pResponses.put("MEDICATION","");
+			pResponses.put("HEENT","");
+			pResponses.put("CONST","");
+			pResponses.put("CARDIO","");
+			pResponses.put("LUNGS","");
+			pResponses.put("ABDOM","");
+			pResponses.put("MUSCSKEL","");
+			pResponses.put("EXTREM","");
+			pResponses.put("NEURO","");
+			pResponses.put("SKIN","");
+			pResponses.put("PSYCH","");
+			pResponses.put("LABRESULT","");
+			pResponses.put("IMAGING","");
+			pResponses.put("ECG","");
+			pResponses.put("IMPRESSION","");
+			pResponses.put("PLAN","");
+			pResponses.put("MANAGE","");
+			pResponses.put("QUESTIONS","");
+		} else if(q.procedureTitle.equals("General History")) {
+			pResponses.put("","");	
+		}
 		
 		String diagnoses = "";
 		String urgency = "";
@@ -153,17 +186,21 @@ public class EncounterFBO {
 					!conceptName.equals("DOCTOR RECOMMENDATIONS") &&
 					!conceptName.equals("DOCTOR INFO REQUEST")){
 					if (o.getValueAsString(l).equals("")){
-						patientResponses += "<b>" + o.getConcept()
+						pResponses.put(conceptName, "<b>" + o.getConcept()
 							.getDescription().getDescription() 
-							+ "</b><br>No response given<br><br>";
+							+ "</b><br>No response given<br><br>");
 					}
 					else{
-						patientResponses += "<b>" + o.getConcept()
+						pResponses.put(conceptName, "<b>" + o.getConcept()
 							.getDescription().getDescription() 
-							+ "</b><br>" + o.getValueAsString(l) + "<br><br>";
+							+ "</b><br>" + o.getValueAsString(l) + "<br><br>");
 					}
 				}
 			}
+		}
+		
+		for(Map.Entry<String, String> response : pResponses.entrySet()) {
+			patientResponses += response.getValue();
 		}
 		
 				
