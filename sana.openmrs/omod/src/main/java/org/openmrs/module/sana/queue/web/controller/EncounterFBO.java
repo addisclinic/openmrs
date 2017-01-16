@@ -74,7 +74,10 @@ public class EncounterFBO {
         		+ q.getDateCreated().toString().substring(0,10) + "<br><br>");
 
 		if(q.procedureTitle.equals("Physician to Physician Consult")) {
+			pResponses.put("PATIENTNAME","");
+			pResponses.put("PATIENTNAME2","");
 			pResponses.put("SEX","");
+			pResponses.put("SEX OF PATIENT","");
 			pResponses.put("AGE","");
 			pResponses.put("CHIEFCOMPLAINT","");
 			pResponses.put("MEDHX","");
