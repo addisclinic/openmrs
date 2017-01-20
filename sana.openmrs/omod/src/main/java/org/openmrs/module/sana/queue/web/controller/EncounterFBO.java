@@ -103,7 +103,42 @@ public class EncounterFBO {
 			pResponses.put("MANAGE","");
 			pResponses.put("QUESTIONS","");
 		} else if(q.procedureTitle.equals("General History")) {
-			pResponses.put("","");	
+			pResponses.put("PATIENT TYPE","");
+			pResponses.put("PHONE NUMBER","");
+			pResponses.put("TEMPERATURE","");
+			pResponses.put("BLOOD PRESSURE","");
+			pResponses.put("HEARTBEAT","");
+			pResponses.put("RESPIRATION RATE","");
+			pResponses.put("TOP SYMPTOMS","");
+			pResponses.put("HIV POSITIVE","");
+			pResponses.put("DATE HIV POSITIVE","");
+			pResponses.put("CD4 COUNT PATIENT","");
+			pResponses.put("CD4 COUNT DATE","");
+			pResponses.put("CD4 COUNT INITIAL","");
+			pResponses.put("VIRAL LOAD PATIENT","");
+			pResponses.put("VIRAL LOAD DATE","");
+			pResponses.put("VIRAL LOAD INITIAL","");
+			pResponses.put("HIV COMPLICATIONS","");
+			pResponses.put("OTHER","");
+			pResponses.put("TAKING HIV MEDICATIONS","");
+			pResponses.put("HIV MEDICATIONS","");
+			pResponses.put("HIV MEDICATIONS LENGTH","");
+			pResponses.put("HIV MEDICATIONS FORGET","");
+			pResponses.put("TB POSITIVE","");
+			pResponses.put("TB DATE","");
+			pResponses.put("TB TREATMENT","");
+			pResponses.put("TB MEDICATIONS","");
+			pResponses.put("TB MEDICATIONS LENGTH","");
+			pResponses.put("MEDICATIONS LIST","");
+			pResponses.put("MEDICATIONS FREQUENCY","");
+			pResponses.put("MEDICATIONS LENGTH","");
+			pResponses.put("HAVE MEDICATIONS ALLERGIES","");
+			pResponses.put("MEDICATIONS ALLERGIES","");
+			pResponses.put("MEDICATIONS SIDEEFFECTS","");
+			pResponses.put("CHILDREN","");
+			pResponses.put("MARRIAGE STATUS","");
+			pResponses.put("HOUSEHOLD SIZE","");
+			pResponses.put("ADDITIONAL COMMENTS","");
 		}
 		
 		String diagnoses = "";
